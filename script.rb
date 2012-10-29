@@ -1,15 +1,22 @@
 #!/usr/bin/env ruby
 
 require 'nokogiri'
-require 'yaml'
 require 'net/http'
+require 'yaml'
 
 module VimRFC
 
-  $rfchash   = {}
+  #
+  # Settings.
+  #
   $rfcfile   = 'test.xml'
   $cachefile = 'test.yml'
 
+  $rfchash   = {}
+
+  #
+  # Event-driven XML parsing. Basically a state machine that fills a hash.
+  #
   class Parser < Nokogiri::XML::SAX::Document
     def start_element(elem, attrs = [])
       case elem
@@ -34,17 +41,29 @@ module VimRFC
         elsif @in_title
           @title = s
         end
-        $rfchash[@title.to_sym] = @docid if @docid and @title
+        $rfchash[@docid] = @title if @docid and @title
       end
     end
   end
 
+  #
+  # Main class of this module.
+  #
   class Handling
     def initialize
-      update unless File.exist? $rfcfile
+      if File.exist? $cachefile
+        load_from_cachefile
+      elsif File.exist? $rfcfile
+        read_xml_into_hash
+        write_to_cachefile
+      else
+        get_rfcfile
+        read_xml_into_hash
+        write_to_cachefile
+      end
     end
 
-    def update
+    def get_rfcfile
       Net::HTTP.start('www.ietf.org') do |http|
         f = open($rfcfile, 'w')
         begin
@@ -62,40 +81,30 @@ module VimRFC
       end
     end
 
-    def search
-      counter = 0
-      f = File.new($rfcfile)
-      begin
-        while (line = f.gets)
-          puts "#{counter}: #{line}"
-          counter += 1
+    def search(regex)
+      load_from_cachefile
+      $rfchash.each_pair do |id,title|
+        if title =~ /#{regex}/i
+          puts "#{id}: #{title}"
         end
-      rescue => err
-        puts "Exception: #{err}"
-        err
-      ensure
-        f.close
       end
     end
 
-    def load_from_file
+    def write_to_cachefile
+      File.open($cachefile, 'w') do |f|
+        f.write($rfchash.to_yaml)
+      end
+    end
+
+    def load_from_cachefile
       require 'yaml'
       $rfchash = YAML::load_file($cachefile)
-      puts $rfchash.inspect
     end
 
-    def save_to_file
-      File.open($cachefile, 'w') do |f|
-        f.write $rfchash.to_yaml
-      end
-    end
-
-    def parse
+    def read_xml_into_hash
       Nokogiri::XML::SAX::Parser.new(VimRFC::Parser.new).parse_file($rfcfile)
     end
   end
 end
 
-foo = VimRFC::Handling.new
-foo.parse
-foo.save_to_file
+VimRFC::Handling.new.search($*[0])
