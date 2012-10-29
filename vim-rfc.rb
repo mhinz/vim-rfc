@@ -9,8 +9,8 @@ module VimRFC
   #
   # Settings.
   #
-  $rfcfile   = 'test.xml'
-  $cachefile = 'test.yml'
+  $rfcfile   = File.expand_path('~/.rfc.xml')
+  $cachefile = File.expand_path('~/.rfc-cache.yml')
 
   $rfchash   = {}
 
@@ -61,6 +61,7 @@ module VimRFC
         read_xml_into_hash
         write_to_cachefile
       end
+      delete_rfcfile
     end
 
     def get_rfcfile
@@ -79,6 +80,10 @@ module VimRFC
           f.close
         end
       end
+    end
+
+    def delete_rfcfile
+      File.unlink($rfcfile) if File.exist? $rfcfile
     end
 
     def search(regex)
