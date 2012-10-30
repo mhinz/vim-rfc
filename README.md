@@ -1,7 +1,7 @@
 Description
 ===========
 
-Query RFC database and load RFCs into a Vim buffer. A query looks for STD and
+Query RFC database and load document into a Vim buffer. A query looks for STD and
 RFC, but omits FYI and BCP.
 
 How does it work?
@@ -34,7 +34,7 @@ written in C. Thus you will need libxml2-dev and libxslt-dev, too.
 Usage
 =====
 
-There are only three commands defined: RQ, RG and RGSfor querying the database,
+There are only three commands defined: RQ, RG and RGS for querying the database,
 getting a RFC and getting a STD respectively.
 
 Query the database:
