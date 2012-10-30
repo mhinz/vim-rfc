@@ -62,7 +62,7 @@ module VimRFC
         read_xml_into_hash
         write_to_cachefile
       end
-      #delete_indexfile
+      delete_indexfile
     end
 
     def get_indexfile
