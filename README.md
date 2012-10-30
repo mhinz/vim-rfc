@@ -23,7 +23,7 @@ written in C. Thus you will need libxml2-dev and libxslt-dev, too.
 Usage
 =====
 
-There are only two commands defined: RQ and QG for querying and getting
+There are only two commands defined: RQ and RG for querying and getting
 respectively.
 
 Query the RFC database:
