@@ -6,11 +6,21 @@ Query RFC database and download RFCs from within Vim.
 How does it work?
 =================
 
+Without cachefile
+-----------------
+
     1.  download RFC index file (XML)
     2.  build cachefile from XML (YAML)
     3.  build hash from cachefile
     4.  provide hash to Vim
     5.  delete index file
+
+With cachefile
+--------------
+
+    1.  build hash from cachefile
+    2.  provide hash to Vim
+    3.  (delete index file if existing)
 
 Dependencies
 ============
