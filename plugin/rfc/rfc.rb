@@ -1,10 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'nokogiri'
-require 'net/http'
-require 'yaml'
-
 module VimRFC
+  require 'nokogiri'
 
   #
   # Settings.
@@ -28,7 +25,7 @@ module VimRFC
 
     def end_element(elem)
       case elem
-      when 'rfc-entry' then @in_rfc   = false and @docid = nil and @title = nil
+      when 'rfc-entry' then @in_rfc   = false
       when 'doc-id'    then @in_docid = false
       when 'title'     then @in_title = false
       end
@@ -37,11 +34,12 @@ module VimRFC
     def characters(s)
       if @in_rfc
         if @in_docid
+          # s contains the content of the doc-id tag
           @docid = s
         elsif @in_title
-          @title = s
+          # s contains the content of the title tag
+          $rfchash[@docid] = s if @docid
         end
-        $rfchash[@docid] = @title if @docid and @title
       end
     end
   end
@@ -50,6 +48,9 @@ module VimRFC
   # Main class of this module.
   #
   class Handling
+    require 'net/http'
+    require 'yaml'
+
     def initialize
       if File.exist? $cachefile
         load_from_cachefile
@@ -88,11 +89,13 @@ module VimRFC
 
     def search(regex)
       load_from_cachefile
+      ret = {}
       $rfchash.each_pair do |id,title|
         if title =~ /#{regex}/i
-          puts "#{id}: #{title}"
+          ret[id] = title
         end
       end
+      ret
     end
 
     def write_to_cachefile
@@ -102,7 +105,6 @@ module VimRFC
     end
 
     def load_from_cachefile
-      require 'yaml'
       $rfchash = YAML::load_file($cachefile)
     end
 
@@ -111,5 +113,3 @@ module VimRFC
     end
   end
 end
-
-VimRFC::Handling.new.search($*[0])
