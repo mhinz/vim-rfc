@@ -1,0 +1,101 @@
+*vim-rfc.txt*                                        Handling RFCs like a boss.
+*vim-rfc*
+*rfc*
+
+                                                    ___
+                  __                              /'___\
+          __  __ /\_\    ___ ___            _ __ /\ \__/  ____
+         /\ \/\ \\/\ \ /' __` __`\  _______/\`'__\ \ ,__\/'___\
+         \ \ \_/ |\ \ \/\ \/\ \/\ \/\______\ \ \/ \ \ \_/\ \__/
+          \ \___/  \ \_\ \_\ \_\ \_\/______/\ \_\  \ \_\\ \____\
+           \/__/    \/_/\/_/\/_/\/_/         \/_/   \/_/ \/____/
+
+
+
+==============================================================================
+CONTENTS                                                        *rfc-contents*
+
+    1.Intro.......................................|rfc-intro|
+    2.Internals...................................|rfc-internals|
+    3.Dependencies................................|rfc-dependencies|
+    4.Usage.......................................|rfc-usage|
+    5.Credits.....................................|rfc-credits|
+    6.License.....................................|rfc-license|
+
+
+==============================================================================
+1. Intro                                                           *rfc-intro*
+
+vim-rfc is a plugin to query the RFC database and loading RFC/STD documents
+into a Vim buffer.
+
+It is mostly written in Ruby.
+
+
+==============================================================================
+2. Internals                                                   *rfc-internals*
+
+If you use this plugin for the first time it downloads an index file from the
+internet. To parse that XML file a SAX parser, nokogiri, is used which is a
+event-driven XML parser written in C.
+
+The parse tree is saved in a Ruby hash and written to a cachefile in YAML
+format. The file is located in ~/.rfc-cache.yml.
+
+So if you issue a query, the cachefile will be used for the lookup. The
+resulting hash will be provided back to the Vim environment.
+
+At the end the index file will be removed, since it's not needed anymore.
+
+If you use the plugin for the second time, the cachefile will be used right
+away and downloading the 8 MiB index will be omitted.
+
+
+==============================================================================
+3. Dependencies                                             *rfc-dependencies*
+
+The used SAX parser is provided by the Ruby gem nokogiri.
+
+    gem install nokogiri
+
+The performance reasons the parser is implemented in C and thus depends on
+libxml2-dev and libxslt-dev.
+
+
+==============================================================================
+4. Usage                                                           *rfc-usage*
+
+There are only three commands defined: RQ, RG and RGS for querying the
+database, getting a RFC and getting a STD respectively.
+
+Query the database:
+
+    :RQ http
+
+Loading a RFC into a buffer:
+
+    :RG 2441
+
+    :2441RG
+
+Loading a STD into a buffer:
+
+    :RGS 1
+
+    :1RGS
+
+
+==============================================================================
+5. Credits                                                       *rfc-credits*
+
+No one so far! Want to be the first? - You know where to find the repo.
+Do you accept the challenge? Fame and fortune to the glorious adventurers.
+
+
+==============================================================================
+6. License                                                       *rfc-license*
+
+Distributed under the same terms as Vim itself (see |:help license|).
+
+
+vim: tw=78
