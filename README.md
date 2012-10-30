@@ -4,6 +4,10 @@ Description
 Query RFC database and load document into a Vim buffer. A query looks for STD and
 RFC, but omits FYI and BCP.
 
+    :RQ cidr
+
+![Example: RQ cidr](https://github.com/mhinz/vim-rfc/raw/master/rfc.png)
+
 How does it work?
 =================
 
