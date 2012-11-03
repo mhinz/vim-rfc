@@ -86,7 +86,7 @@ Loading a STD into a buffer:
 
 
 ==============================================================================
-5. Credits                                                       *rfc-credits*
+5. Bugs                                                             *rfc-bugs*
 
 No one so far! Want to be the first? - You know where to find the repo.
 Do you accept the challenge? Fame and fortune to the glorious adventurers.
