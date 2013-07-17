@@ -1,4 +1,4 @@
-*vim-rfc.txt*                                        Handling RFCs like a boss.
+*vim-rfc.txt*  Handling RFCs like a boss.
 *vim-rfc*
 *rfc*
 
