@@ -65,10 +65,10 @@ module VimRFC
     end
 
     def write_indexfile
-      Net::HTTP.start('www.ietf.org') do |http|
+      Net::HTTP.start('www.rfc-editor.org') do |http|
         f = open($indexfile, 'w')
         begin
-          http.request_get('/rfc/new-rfc-index.xml') do |res|
+          http.request_get('/in-notes/rfc-index.xml') do |res|
             res.read_body do |segment|
               f.write(segment)
             end
