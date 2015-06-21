@@ -23,9 +23,6 @@ Rebuild cache and query the database: `:RFC! <case-insensitive regexp>`
 A new window with all found matches will be shown. Now you can simply use `<cr>`
 to open the entry.
 
-You can also open by RFC id. E.g. if one of the matches is "RFC123", you can
-enter "123" to open it.
-
 If you don't want to open anything, hit `q`.
 
 NOTE: Since regular expressions are used, ":RFC .*" will list documents. Makes

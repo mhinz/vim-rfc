@@ -24,8 +24,6 @@ function! rfc#query(rebuild_cache, query) abort
     Hash[matches.sort].each_pair do |tag,title|
       cur.append(lnum, "#{tag}: #{title}")
       lnum += 1
-      type, id = tag[0..2], tag[3..-1]
-      VIM::command("nnoremap <buffer> #{id} :call <sid>open_entry_by_id('#{type}', #{id})<cr>")
     end
     VIM::command('silent $delete _')
     VIM::command('0')
@@ -34,13 +32,6 @@ function! rfc#query(rebuild_cache, query) abort
     VIM::command('nnoremap <buffer> q :close<cr>')
   end
 EOF
-endfunction
-
-function! s:open_entry_by_id(type, id)
-  silent close
-  execute 'silent edit http://www.ietf.org/rfc/'. (a:type == 'RFC' ? 'rfc' : 'std/std') . a:id .'.txt'
-  setlocal filetype=rfc nomodifiable
-  redraw!
 endfunction
 
 function! s:open_entry_by_cr()
