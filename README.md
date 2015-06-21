@@ -25,8 +25,8 @@ to open the entry.
 
 If you don't want to open anything, hit `q`.
 
-NOTE: Since regular expressions are used, ":RFC .*" will list documents. Makes
-it easy to search.
+NOTE: Since regular expressions are used, ":RFC .*" will list all documents.
+Makes it easy to search.
 
 Internals
 =========
