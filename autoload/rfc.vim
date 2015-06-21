@@ -6,6 +6,10 @@ function! rfc#query(rebuild_cache, query) abort
     return
   endif
 
+  if bufexists('vim-rfc')
+    silent bdelete vim-rfc
+  endif
+
   ruby << EOF
   matches = VimRFC::Handling.new(VIM::evaluate('a:rebuild_cache')).search(VIM::evaluate('a:query'))
 
@@ -30,9 +34,10 @@ endfunction
 
 function! s:setup_window()
   silent $delete _
+  file vim-rfc
   setlocal nomodifiable nomodified
   setlocal buftype=nofile bufhidden=wipe
-  " setlocal statusline=RFC/STD\ documents'
+  setlocal statusline=RFC/STD\ documents
   nnoremap <buffer> <cr> :call <sid>open_entry_by_cr()<cr>
   nnoremap <buffer> q :close<cr>
   syntax match  RFCTitle /.*/                 contains=RFCStart
