@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 module VimRFC
+  require 'rubygems'
   require 'nokogiri'
 
   #
