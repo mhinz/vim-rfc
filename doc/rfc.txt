@@ -27,9 +27,9 @@
 CONTENTS                                                          *rfc-contents*
 
     INTRO ........................................|rfc-intro|
-    INTERNALS ....................................|rfc-internals|
     DEPENDENCIES .................................|rfc-dependencies|
     USAGE ........................................|rfc-usage|
+    INTERNALS ....................................|rfc-internals|
 
 ==============================================================================
 INTRO                                                                *rfc-intro*
@@ -38,6 +38,40 @@ vim-rfc is a plugin to query the RFC database and loading RFC/STD documents
 into a Vim buffer.
 
 It is mostly written in Ruby.
+
+==============================================================================
+DEPENDENCIES                                                  *rfc-dependencies*
+
+The used SAX parser is provided by the Ruby gem nokogiri.
+>
+    gem install nokogiri
+<
+The performance reasons the parser is implemented in C and thus depends on
+libxml2-dev and libxslt-dev.
+
+==============================================================================
+USAGE                                                                *rfc-usage*
+
+..is really simple.
+
+Query the database:~
+>
+    :RFC <case-insensitive regexp>
+<
+Rebuild cache and query the database:~
+>
+    :RFC! <case-insensitive regexp>
+<
+A new window with all found matches will be shown. Now you can simply use
+|<cr>| to open the entry.
+
+You can also open by RFC id. E.g. if one of the matches is "RFC123", you can
+enter "123" to open it.
+
+If you don't want to open anything, hit 'q'.
+
+NOTE: Since regular expressions are used, ":RFC .*" will list documents. Makes
+it easy to search.
 
 ==============================================================================
 INTERNALS                                                        *rfc-internals*
@@ -56,33 +90,6 @@ At the end the index file will be removed, since it's not needed anymore.
 
 If you use the plugin for the second time, the cachefile will be used right
 away and downloading the 8 MiB index will be omitted.
-
-==============================================================================
-DEPENDENCIES                                                  *rfc-dependencies*
-
-The used SAX parser is provided by the Ruby gem nokogiri.
-
-    gem install nokogiri
-
-The performance reasons the parser is implemented in C and thus depends on
-libxml2-dev and libxslt-dev.
-
-==============================================================================
-USAGE                                                                *rfc-usage*
-
-..is really simple.
-
-Query the database:
-
-    :RFC <case-insensitive regexp>
-
-A new window with all found matches will be shown. Now you can simply use
-|<cr>| to open the entry.
-
-You can also open by RFC id. E.g. if one of the matches is "RFC123", you can
-enter "123" to open it.
-
-If you don't want to open anything, hit 'q'.
 
 ==============================================================================
 vim: tw=78
