@@ -35,9 +35,7 @@ EOF
 endfunction
 
 function! s:open_entry_by_cr()
-  let line = getline('.')
-  let type = line[:2]
-  let id   = line[3:stridx(line, ':')-1]
+  let [type, id] = matchlist(getline('.'), '^\v(...)0*(\d+)')[1:2]
   silent close
   execute 'silent edit http://www.ietf.org/rfc/'. (type == 'RFC' ? 'rfc' : 'std/std') . id .'.txt'
   setlocal filetype=rfc nomodifiable
