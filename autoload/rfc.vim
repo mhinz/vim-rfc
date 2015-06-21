@@ -1,6 +1,11 @@
 ruby load VIM::evaluate("expand('<sfile>:p:h') . '/../lib/rfc.rb'")
 
 function! rfc#query(rebuild_cache, query) abort
+  if !has('ruby')
+    echomsg 'vim-rfc: This plugin needs +Ruby support.'
+    return
+  endif
+
   ruby << EOF
   matches = VimRFC::Handling.new(VIM::evaluate('a:rebuild_cache')).search(VIM::evaluate('a:query'))
 
