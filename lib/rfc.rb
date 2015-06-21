@@ -6,8 +6,8 @@ module VimRFC
   #
   # Settings.
   #
-  $indexfile = File.expand_path('~/.rfc.xml')
-  $cachefile = File.expand_path('~/.rfc-cache.yml')
+  $indexfile = File.expand_path('~/.vim-rfc.xml')
+  $cachefile = File.expand_path('~/.vim-rfc.yml')
 
   $entryhash = {}
 
