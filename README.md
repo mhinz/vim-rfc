@@ -25,6 +25,8 @@ to open the entry.
 You can also open by RFC id. E.g. if one of the matches is "RFC123", you can
 enter "123" to open it.
 
+If you don't want to open anything, hit `q`.
+
 Internals
 =========
 
