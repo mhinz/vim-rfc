@@ -3,51 +3,46 @@ documents into a Vim buffer.
 
 It's mostly written in Ruby.
 
-![Example: RQ cidr](https://github.com/mhinz/vim-rfc/raw/master/rfc.png)
+image:https://github.com/mhinz/vim-rfc/raw/master/rfc.png[vim-rfc in action!]
 
-Dependencies
-============
+== Dependencies
 
-```
-$ gem install nokogiri
-```
+    $ gem install nokogiri
 
-Usage
-=====
+== Usage
 
 ..is really simple.
 
 Query the database: `:RFC <case-insensitive regexp>`
+
 Rebuild cache and query the database: `:RFC! <case-insensitive regexp>`
 
-A new window with all found matches will be shown. Now you can simply use `<cr>`
-to open the entry.
+A new window with all found matches will be shown. Now you can simply use
+`<cr>` to open the entry.
 
 If you don't want to open anything, hit `q`.
 
-NOTE: Since regular expressions are used, ":RFC .*" will list all documents.
+TIP: Since regular expressions are used, `:RFC .*` will list all documents.
 Makes it easy to search.
 
-Internals
-=========
+== Internals
 
 If you use this plugin for the first time it downloads an index file from the
 internet. To parse that XML file a SAX parser, nokogiri, is used which is a
 event-driven XML parser written in C.
 
 The parse tree is saved in a Ruby hash and written to a cachefile in YAML
-format. The file is located in ~/.vim-rfc.yml.
+format. The file is located in `~/.vim-rfc.yml`.
 
 If you issue a query, the cachefile will be used for the lookup. The resulting
 hash will be provided back to the Vim environment.
 
 At the end the index file will be removed, since it's not needed anymore.
 
-If you use the plugin for the second time, the cachefile will be used right away
-and downloading the 8 MiB index will be omitted.
+If you use the plugin for the second time, the cachefile will be used right
+away and downloading the 8 MiB index will be omitted.
 
-Author and feedback
-===================
+== Author and Feedback
 
 If you like my plugins, please star them on Github. It's a great way of getting
 feedback. Same goes for issues reports or feature requests.
@@ -61,3 +56,7 @@ feedback. Same goes for issues reports or feature requests.
 *Stackoverflow:* http://stackoverflow.com/users/1606959/mhinz[mhinz]
 
 _Thank you for flying mhi airlines. Get your Vim on!_
+
+== License
+
+MIT license. Copyright (c) 2015 Marco Hinz.
