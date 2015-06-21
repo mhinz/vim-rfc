@@ -37,7 +37,9 @@ function! s:setup_window()
   file vim-rfc
   setlocal nomodifiable nomodified
   setlocal buftype=nofile bufhidden=wipe
-  setlocal statusline=RFC/STD\ documents
+  if empty(&statusline)
+    setlocal statusline=\ RFC/STD\ documents
+  endif
   nnoremap <buffer> <cr> :call <sid>open_entry_by_cr()<cr>
   nnoremap <buffer> q :close<cr>
   syntax match  RFCTitle /.*/                 contains=RFCStart
