@@ -1,7 +1,5 @@
-*vim-rfc.txt*  Handling RFCs like a boss.
-*vim-rfc*
+*vim-rfc*  Handling RFCs like a boss.
 *rfc*
-
                                                     ___
                   __                              /'___\
           __  __ /\_\    ___ ___            _ __ /\ \__/  ____
@@ -10,49 +8,57 @@
           \ \___/  \ \_\ \_\ \_\ \_\/______/\ \_\  \ \_\\ \____\
            \/__/    \/_/\/_/\/_/\/_/         \/_/   \/_/ \/____/
 
+  by Marco Hinz~
 
+  Twitter: https://twitter.com/_mhinz_
+  Github:  http://github.com/mhinz
+  IRC:     mhi^ (Freenode)
+>
+  If you use any of my plugins, please star them on github. It's a great way
+  of getting feedback and gives me the kick to put more time into their
+  development.
+
+  If you encounter any bugs or have feature requests, just open an issue
+  report on Github.
+
+  Thank you for flying mhi^ airlines. Get the Vim on!
+<
+==============================================================================
+CONTENTS                                                          *rfc-contents*
+
+    INTRO ........................................|rfc-intro|
+    INTERNALS ....................................|rfc-internals|
+    DEPENDENCIES .................................|rfc-dependencies|
+    USAGE ........................................|rfc-usage|
 
 ==============================================================================
-CONTENTS                                                        *rfc-contents*
-
-    1.Intro.......................................|rfc-intro|
-    2.Internals...................................|rfc-internals|
-    3.Dependencies................................|rfc-dependencies|
-    4.Usage.......................................|rfc-usage|
-    5.Credits.....................................|rfc-credits|
-    6.License.....................................|rfc-license|
-
-
-==============================================================================
-1. Intro                                                           *rfc-intro*
+INTRO                                                                *rfc-intro*
 
 vim-rfc is a plugin to query the RFC database and loading RFC/STD documents
 into a Vim buffer.
 
 It is mostly written in Ruby.
 
-
 ==============================================================================
-2. Internals                                                   *rfc-internals*
+INTERNALS                                                        *rfc-internals*
 
 If you use this plugin for the first time it downloads an index file from the
 internet. To parse that XML file a SAX parser, nokogiri, is used which is a
 event-driven XML parser written in C.
 
 The parse tree is saved in a Ruby hash and written to a cachefile in YAML
-format. The file is located in ~/.rfc-cache.yml.
+format. The file is located in ~/.vim-rfc.yml.
 
-So if you issue a query, the cachefile will be used for the lookup. The
-resulting hash will be provided back to the Vim environment.
+If you issue a query, the cachefile will be used for the lookup. The resulting
+hash will be provided back to the Vim environment.
 
 At the end the index file will be removed, since it's not needed anymore.
 
 If you use the plugin for the second time, the cachefile will be used right
 away and downloading the 8 MiB index will be omitted.
 
-
 ==============================================================================
-3. Dependencies                                             *rfc-dependencies*
+DEPENDENCIES                                                  *rfc-dependencies*
 
 The used SAX parser is provided by the Ruby gem nokogiri.
 
@@ -61,41 +67,20 @@ The used SAX parser is provided by the Ruby gem nokogiri.
 The performance reasons the parser is implemented in C and thus depends on
 libxml2-dev and libxslt-dev.
 
-
 ==============================================================================
-4. Usage                                                           *rfc-usage*
+USAGE                                                                *rfc-usage*
 
-There are only three commands defined: RQ, RG and RGS for querying the
-database, getting a RFC and getting a STD respectively.
+..is really simple.
 
 Query the database:
 
-    :RQ http
+    :RFC <case-insensitive regexp>
 
-Loading a RFC into a buffer:
+A new window with all found matches will be shown. Now you can simply use
+|<cr>| to open the entry.
 
-    :RG 2441
-
-    :2441RG
-
-Loading a STD into a buffer:
-
-    :RGS 1
-
-    :1RGS
-
+You can also open by RFC id. E.g. if one of the matches is "RFC123", you can
+enter "123" to open it.
 
 ==============================================================================
-5. Bugs                                                             *rfc-bugs*
-
-No one so far! Want to be the first? - You know where to find the repo.
-Do you accept the challenge? Fame and fortune to the glorious adventurers.
-
-
-==============================================================================
-6. License                                                       *rfc-license*
-
-Distributed under the same terms as Vim itself (see |:help license|).
-
-
 vim: tw=78

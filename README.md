@@ -1,63 +1,60 @@
-Description
-===========
+vim-rfc is a plugin to query the RFC database and loading RFC/STD documents into
+a Vim buffer.
 
-Query RFC database and load document into a Vim buffer. A query looks for STD and
-RFC, but omits FYI and BCP.
-
-    :RQ cidr
+It is mostly written in Ruby.
 
 ![Example: RQ cidr](https://github.com/mhinz/vim-rfc/raw/master/rfc.png)
-
-How does it work?
-=================
-
-Without cachefile
------------------
-
-    1.  download RFC index file (XML)
-    2.  build cachefile from XML (YAML)
-    3.  build hash from cachefile
-    4.  provide hash to Vim
-    5.  delete index file
-
-With cachefile
---------------
-
-    1.  build hash from cachefile
-    2.  provide hash to Vim
-    3.  (delete index file if existing)
 
 Dependencies
 ============
 
-The Ruby script depends on a SAX parser provided by nokogiri, which itself is
-written in C. Thus you will need libxml2-dev and libxslt-dev, too.
-
-    gem install nokogiri
+```
+$ gem install nokogiri
+```
 
 Usage
 =====
 
-There are only three commands defined: RQ, RG and RGS for querying the database,
-getting a RFC and getting a STD respectively.
+..is really simple.
 
-Query the database:
+Query the database: `:RFC <case-insensitive regexp>`
 
-    :RQ http
+A new window with all found matches will be shown. Now you can simply use `<cr>`
+to open the entry.
 
-Loading a RFC into a buffer:
+You can also open by RFC id. E.g. if one of the matches is "RFC123", you can
+enter "123" to open it.
 
-    :RG 2818
+Internals
+=========
 
-    :2818RG
+If you use this plugin for the first time it downloads an index file from the
+internet. To parse that XML file a SAX parser, nokogiri, is used which is a
+event-driven XML parser written in C.
 
-Loading a STD into a buffer:
+The parse tree is saved in a Ruby hash and written to a cachefile in YAML
+format. The file is located in ~/.vim-rfc.yml.
 
-    :RGS 1
+If you issue a query, the cachefile will be used for the lookup. The resulting
+hash will be provided back to the Vim environment.
 
-    :1RGS
+At the end the index file will be removed, since it's not needed anymore.
 
-Author
-======
+If you use the plugin for the second time, the cachefile will be used right away
+and downloading the 8 MiB index will be omitted.
 
-Marco Hinz
+Author and feedback
+===================
+
+If you like my plugins, please star them on Github. It's a great way of getting
+feedback. Same goes for issues reports or feature requests.
+
+*Names:* Marco Hinz, mhinz, mhi^, mhi
+
+*Mail:* `<mh.codebro@gmail.com>`
+
+*Twitter:* https://twitter.com/\_mhinz_[@\_mhinz_]
+
+*Stackoverflow:* http://stackoverflow.com/users/1606959/mhinz[mhinz]
+
+_Thank you for flying mhi airlines. Get your Vim on!_
