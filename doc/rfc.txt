@@ -71,6 +71,27 @@ NOTE: Since regular expressions are used, ":RFC .*" will list all documents.
 Makes it easy to search.
 
 ==============================================================================
+COLORS                                                              *rfc-colors*
+
+You can overwrite the highlight groups used by vim-rfc.
+
+Example: "RFC0123: Nice RFC, yo."
+
+    Hi group  |  Part          |  Default
+    --------------------------------------------------
+    RFCType   |  RFC           |  linked to Identifier
+    RFCID     |  0123          |  linked to Number
+    RFCDelim  |  :             |  linked to Delimiter
+    RFCTitle  |  Nice RFC, yo. |  linked to Title
+
+Example: (my terminal emulator supports 256 colors)
+>
+    highlight RFCType  ctermfg=240 ctermbg=NONE cterm=NONE
+    highlight RFCID    ctermfg=215 ctermbg=NONE cterm=NONE
+    highlight RFCTitle ctermfg=255 ctermbg=NONE cterm=NONE
+    highlight RFCDelim ctermfg=240 ctermbg=NONE cterm=NONE
+<
+==============================================================================
 INTERNALS                                                        *rfc-internals*
 
 If you use this plugin for the first time it downloads an index file from the

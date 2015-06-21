@@ -17,21 +17,34 @@ function! rfc#query(rebuild_cache, query) abort
       size = 10
     end
     VIM::command("#{size}new")
-    VIM::command('setlocal buftype=nofile bufhidden=wipe statusline=RFC/STD\ documents')
-
     lnum = 0
     cur = VIM::Buffer.current
     Hash[matches.sort].each_pair do |tag,title|
       cur.append(lnum, "#{tag}: #{title}")
       lnum += 1
     end
-    VIM::command('silent $delete _')
-    VIM::command('0')
-    VIM::command('setlocal buftype=nofile nomodifiable nomodified')
-    VIM::command('nnoremap <buffer> <cr> :call <sid>open_entry_by_cr()<cr>')
-    VIM::command('nnoremap <buffer> q :close<cr>')
+    VIM::command('call <sid>setup_window()')
   end
 EOF
+endfunction
+
+function! s:setup_window()
+  silent $delete _
+  setlocal nomodifiable nomodified
+  setlocal buftype=nofile bufhidden=wipe
+  " setlocal statusline=RFC/STD\ documents'
+  nnoremap <buffer> <cr> :call <sid>open_entry_by_cr()<cr>
+  nnoremap <buffer> q :close<cr>
+  syntax match  RFCTitle /.*/                 contains=RFCStart
+  syntax match  RFCStart /\v^\u{3}\d+:/       contains=RFCType,RFCID,RFCDelim contained
+  syntax region RFCType  start=/^/ end=/^.../ contained
+  syntax match  RFCID    /\d\+/               contained
+  syntax match  RFCDelim /:/                  contained
+  highlight link RFCTitle Title
+  highlight link RFCType  Identifier
+  highlight link RFCID    Number
+  highlight link RFCDelim Delimiter
+  0
 endfunction
 
 function! s:open_entry_by_cr()
