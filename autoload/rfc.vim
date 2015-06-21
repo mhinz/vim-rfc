@@ -11,7 +11,8 @@ function! rfc#query(rebuild_cache, query) abort
     if size > 10
       size = 10
     end
-    VIM::command("#{size}new | setlocal buftype=nofile bufhidden=wipe")
+    VIM::command("#{size}new")
+    VIM::command('setlocal buftype=nofile bufhidden=wipe statusline=RFC/STD\ documents')
 
     lnum = 0
     cur = VIM::Buffer.current
