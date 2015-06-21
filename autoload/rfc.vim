@@ -34,7 +34,7 @@ endfunction
 
 function! s:setup_window()
   silent $delete _
-  file vim-rfc
+  silent file vim-rfc
   setlocal nomodifiable nomodified
   setlocal buftype=nofile bufhidden=wipe
   if empty(&statusline)
