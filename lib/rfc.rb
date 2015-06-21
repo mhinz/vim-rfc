@@ -51,21 +51,19 @@ module VimRFC
     require 'net/http'
     require 'yaml'
 
-    def initialize
-      if File.exist? $cachefile
-        load_from_cachefile
-      elsif File.exist? $indexfile
-        read_xml_into_hash
-        write_to_cachefile
+    def initialize(rebuild_cache)
+      if File.exist? $cachefile and rebuild_cache == 0
+        load_cachefile
       else
-        get_indexfile
-        read_xml_into_hash
-        write_to_cachefile
+        VIM::command('redraw | echo "Building cache.."')
+        write_indexfile
+        read_indexfile_into_hash
+        write_cachefile
+        delete_indexfile
       end
-      delete_indexfile
     end
 
-    def get_indexfile
+    def write_indexfile
       Net::HTTP.start('www.ietf.org') do |http|
         f = open($indexfile, 'w')
         begin
@@ -88,7 +86,7 @@ module VimRFC
     end
 
     def search(regex)
-      load_from_cachefile
+      load_cachefile
       ret = {}
       $entryhash.each_pair do |id,title|
         if title =~ /#{regex}/i
@@ -98,17 +96,17 @@ module VimRFC
       ret
     end
 
-    def write_to_cachefile
+    def write_cachefile
       File.open($cachefile, 'w') do |f|
         f.write($entryhash.to_yaml)
       end
     end
 
-    def load_from_cachefile
+    def load_cachefile
       $entryhash = YAML::load_file($cachefile)
     end
 
-    def read_xml_into_hash
+    def read_indexfile_into_hash
       Nokogiri::XML::SAX::Parser.new(VimRFC::Parser.new).parse_file($indexfile)
     end
   end
