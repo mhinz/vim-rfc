@@ -1,7 +1,7 @@
-vim-rfc is a plugin to query the RFC database and loading RFC/STD documents into
-a Vim buffer.
+vim-rfc is a plugin for easy querying of the RFC database and loading RFC/STD
+documents into a Vim buffer.
 
-It is mostly written in Ruby.
+It's mostly written in Ruby.
 
 ![Example: RQ cidr](https://github.com/mhinz/vim-rfc/raw/master/rfc.png)
 
