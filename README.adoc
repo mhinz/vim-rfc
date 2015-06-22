@@ -20,6 +20,7 @@ link:https://github.com/junegunn/vim-plug.git[vim-plug]. Installation is a breez
 ```vim
 call plug#begin('~/.vim/bundle')
   Plug 'mhinz/vim-rfc'
+  Plug 'vim-scripts/rfc-syntax', { 'for': 'rfc' } " optional syntax highlighting for RFC files
 call plug#end()
 ```
 
