@@ -9,7 +9,11 @@ function! rfc#query(rebuild_cache, query) abort
   endif
 
   if bufexists('vim-rfc')
-    silent bdelete vim-rfc
+    if bufname('') == 'vim-rfc'
+      close
+    else
+      silent bdelete vim-rfc
+    endif
   endif
 
   ruby << EOF
