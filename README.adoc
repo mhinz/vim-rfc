@@ -27,6 +27,11 @@ If you don't want to open anything, hit `q`.
 TIP: Since regular expressions are used, `:RFC .*` will list all documents.
 Makes it easy to search.
 
+== Configuration
+
+There are no options, but you can change the default colors used in the window
+opened by `:RFC`. See `:h rfc-colors`.
+
 == Internals
 
 If you use this plugin for the first time it downloads an index file from the
