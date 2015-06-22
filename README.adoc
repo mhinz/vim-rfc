@@ -3,6 +3,8 @@ documents into a Vim buffer.
 
 It's mostly written in Ruby.
 
+(link:https://en.wikipedia.org/wiki/Request_for_Comments[What is a RFC?])
+
 image:https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif[vim-rfc in action!]
 
 == Dependencies
