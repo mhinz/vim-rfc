@@ -1,13 +1,35 @@
-vim-rfc is a plugin for easy querying of the RFC database and loading RFC/STD
+*vim-rfc* is a plugin for easy querying of the RFC database and loading RFC/STD
 documents into a Vim buffer.
-
-It's mostly written in Ruby.
 
 (link:https://en.wikipedia.org/wiki/Request_for_Comments[What is a RFC?])
 
 image:https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif[vim-rfc in action!]
 
+If you use any of my plugins, please star them on github. It's a great way of
+getting feedback and gives me the kick to put more time into their development.
+If you encounter any bugs or have feature requests, just open an issue report on
+Github.
+
+Follow me: link:https://twitter.com/\_mhinz_[Twitter] | link:http://stackoverflow.com/users/1606959/mhinz[SO]
+
+== Installation
+
+If you don't have a plugin manager, I suggest having a look at
+link:https://github.com/junegunn/vim-plug.git[vim-plug]. Installation is a breeze afterwards:
+
+```vim
+call plug#begin('~/.vim/bundle')
+  Plug 'mhinz/vim-rfc'
+call plug#end()
+```
+
+Restart Vim and `:PlugInstall`, then have a look at the docs: `:h rfc`.
+
 == Dependencies
+
+This plugin requires Ruby support compiled into Vim: `:echo has('ruby')`
+
+Additionaly, nokogiri is used as XML parser:
 
     $ gem install nokogiri
 
@@ -15,12 +37,12 @@ image:https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif[vim-rfc in action
 
 ..is really simple.
 
-Query the database: `:RFC <case-insensitive regexp>`
+Query the database: `:RFC <regexp>`
 
-Rebuild cache and query the database: `:RFC! <case-insensitive regexp>`
+Rebuild cache and query the database: `:RFC! <regexp>`
 
-A new window with all found matches will be shown. Now you can simply use
-`<cr>` to open the entry.
+A new window with all matches will be shown. Now you can simply use `<cr>` to
+open the entry.
 
 If you don't want to open anything, hit `q`.
 
@@ -48,21 +70,6 @@ At the end the index file will be removed, since it's not needed anymore.
 
 If you use the plugin for the second time, the cachefile will be used right
 away and downloading the 8 MiB index will be omitted.
-
-== Author and Feedback
-
-If you like my plugins, please star them on Github. It's a great way of getting
-feedback. Same goes for issues reports or feature requests.
-
-*Names:* Marco Hinz, mhinz, mhi^, mhi
-
-*Mail:* `<mh.codebro@gmail.com>`
-
-*Twitter:* https://twitter.com/\_mhinz_[@\_mhinz_]
-
-*Stackoverflow:* http://stackoverflow.com/users/1606959/mhinz[mhinz]
-
-_Thank you for flying mhi airlines. Get your Vim on!_
 
 == License
 
