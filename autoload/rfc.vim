@@ -1,4 +1,6 @@
-ruby load VIM::evaluate("expand('<sfile>:p:h') . '/../lib/rfc.rb'")
+if has('ruby')
+  ruby load VIM::evaluate("expand('<sfile>:p:h') . '/../lib/rfc.rb'")
+endif
 
 function! rfc#query(rebuild_cache, query) abort
   if !has('ruby')
