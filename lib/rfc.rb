@@ -19,8 +19,10 @@ module VimRFC
     def start_element(elem, attrs = [])
       case elem
       when 'rfc-entry', 'std-entry' then @in_entry = true
+                                         @in_other_elem = 0
       when 'doc-id'                 then @in_docid = true
-      when 'title'                  then @in_title = true
+      when 'title'                  then if @in_other_elem==0 then @in_title = true end
+      else if @in_entry then @in_other_elem += 1 end
       end
     end
 
@@ -29,6 +31,7 @@ module VimRFC
       when 'rfc-entry', 'std-entry' then @in_entry = false
       when 'doc-id'                 then @in_docid = false
       when 'title'                  then @in_title = false
+      else if @in_entry then @in_other_elem -= 1 end
       end
     end
 
