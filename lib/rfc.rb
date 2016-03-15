@@ -91,7 +91,7 @@ module VimRFC
 
     def search(regex)
       load_cachefile
-      $entryhash.select { |id,title| title =~ /#{regex}/i }
+      $entryhash.select { |id,title| id =~ /#{regex}/ or title =~ /#{regex}/i }
     end
 
     def write_cachefile
