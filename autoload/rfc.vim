@@ -63,7 +63,7 @@ endfunction
 function! s:open_entry_by_cr()
   let [type, id] = matchlist(getline('.'), '^\v(...)0*(\d+)')[1:2]
   silent close
-  execute 'silent edit http://www.ietf.org/rfc/'. (type == 'RFC' ? 'rfc' : 'std/std') . id .'.txt'
+  execute 'silent edit https://www.ietf.org/rfc/'. (type == 'RFC' ? 'rfc' : 'std/std') . id .'.txt'
   setlocal filetype=rfc nomodifiable
   redraw!
 endfunction
