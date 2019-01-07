@@ -46,8 +46,8 @@ function! s:setup_window()
   if empty(&statusline)
     setlocal statusline=\ RFC/STD\ documents
   endif
-  nnoremap <buffer> <cr> :call <sid>open_entry_by_cr()<cr>
-  nnoremap <buffer> q :close<cr>
+  nnoremap <silent><buffer> <cr> :call <sid>open_entry_by_cr()<cr>
+  nnoremap <silent><buffer> q :close<cr>
   syntax match  RFCTitle /.*/                 contains=RFCStart
   syntax match  RFCStart /\v^\u{3}\d+:/       contains=RFCType,RFCID,RFCDelim contained
   syntax region RFCType  start=/^/ end=/^.../ contained
