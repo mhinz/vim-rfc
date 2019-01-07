@@ -1,10 +1,18 @@
-if has('ruby')
-  ruby load VIM::evaluate("expand('<sfile>:p:h') . '/../lib/rfc.rb'")
-endif
+let s:load_error = 0
+try
+  execute 'rubyfile' expand('<sfile>:p:h') . '/../lib/rfc.rb'
+catch /LoadError/
+  let s:load_error = 1
+endtry
 
 function! rfc#query(rebuild_cache, query) abort
   if !has('ruby')
     echomsg 'vim-rfc: This plugin needs +Ruby support.'
+    return
+  endif
+
+  if s:load_error
+    echomsg 'vim-rfc: Please install the "nokogiri" gem and restart Vim.'
     return
   endif
 
