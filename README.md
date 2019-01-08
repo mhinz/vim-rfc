@@ -42,6 +42,11 @@ to quit. If there is only a single match, it gets opened right away.
 
 Examples: `:RFC`, `:RFC 100`, `:RFC http/2`, `:RFC ipv4 addresses`.
 
+Within a RFC document, if you are on a line from the table of contents,
+`<c-]>`/`<cr>` will jump to the referenced section. On a string like `STD 10` or
+`RFC 1234` (which should also be highlighted), it opens the referenced document
+instead. Use `<c-o>` to jump back.
+
 ## Configuration
 
 There are no options, but you can change the default colors used in the window

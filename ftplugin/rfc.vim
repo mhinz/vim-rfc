@@ -97,4 +97,5 @@ endfunction
 let b:refpos = searchpos('^\v(\d+\.?\s)?\s*References\s*$', 'wn')
 
 nnoremap <buffer> <silent> <C-]> :call <SID>rfcTag()<CR>
+nnoremap <buffer> <silent> <cr>  :call <SID>rfcTag()<CR>
 nnoremap <buffer> <silent> <C-t> :call <SID>rfcJumpBack()<CR>
