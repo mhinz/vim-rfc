@@ -42,6 +42,7 @@ function! rfc#query(rebuild_cache, query) abort
       lnum += 1
     end
     VIM::command('call <sid>setup_window()')
+    VIM::command('call feedkeys("\<cr>", "t")') if size == 1
   end
 EOF
 endfunction
@@ -50,7 +51,7 @@ function! s:setup_window()
   silent $delete _
   silent file vim-rfc
   setlocal nomodifiable nomodified
-  setlocal buftype=nofile bufhidden=wipe
+  setlocal buftype=nofile bufhidden=wipe nowrap
   if empty(&statusline)
     setlocal statusline=\ RFC/STD\ documents
   endif
@@ -79,5 +80,6 @@ function! s:open_entry_by_cr()
   VIM::command('0')
 EOF
   setlocal filetype=rfc nomodified nomodifiable
-  execute 'file' url
+  let cmd = bufexists(url) ? 'edit' : 'file'
+  execute cmd url
 endfunction

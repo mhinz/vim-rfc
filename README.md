@@ -38,7 +38,7 @@ Rebuild cache and list documents:
 ```
 
 A new window with all matches will be shown. Use `<cr>` to open an entry or `q`
-to quit.
+to quit. If there is only a single match, it gets opened right away.
 
 Examples: `:RFC`, `:RFC 100`, `:RFC http/2`, `:RFC ipv4 addresses`.
 
