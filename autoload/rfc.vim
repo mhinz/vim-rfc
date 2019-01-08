@@ -80,6 +80,6 @@ function! s:open_entry_by_cr()
   VIM::command('0')
 EOF
   setlocal filetype=rfc nomodified nomodifiable
-  let cmd = bufexists(url) ? 'edit' : 'file'
+  let cmd = bufloaded(url) ? 'edit' : 'file'
   execute 'silent' cmd url
 endfunction
