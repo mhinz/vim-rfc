@@ -5,12 +5,7 @@ documents into a Vim buffer.
 
 image:https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif[vim-rfc in action!]
 
-If you use any of my plugins, please star them on github. It's a great way of
-getting feedback and gives me the kick to put more time into their development.
-If you encounter any bugs or have feature requests, just open an issue report on
-Github.
-
-Follow me: link:https://twitter.com/\_mhinz_[Twitter] | link:http://stackoverflow.com/users/1606959/mhinz[SO]
+- Includes a modified version of [vim-scripts/rfc-syntax](https://github.com/vim-scripts/rfc-syntax) for RFC syntax highlighting.
 
 == Installation
 
@@ -20,7 +15,6 @@ link:https://github.com/junegunn/vim-plug.git[vim-plug]. Installation is a breez
 ```vim
 call plug#begin('~/.vim/bundle')
   Plug 'mhinz/vim-rfc'
-  Plug 'vim-scripts/rfc-syntax', { 'for': 'rfc' } " optional syntax highlighting for RFC files
 call plug#end()
 ```
 
