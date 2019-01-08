@@ -59,11 +59,12 @@ module VimRFC
       if File.exist? $cachefile and rebuild_cache == 0
         load_cachefile
       else
-        VIM::command('redraw | echo "Building cache.."')
+        VIM::command('redraw | echo "Building cache..."')
         write_indexfile
         read_indexfile_into_hash
         write_cachefile
         delete_indexfile
+        VIM::command('echon " done!"')
       end
     end
 
@@ -91,7 +92,7 @@ module VimRFC
 
     def search(regex)
       load_cachefile
-      $entryhash.select { |id,title| id =~ /#{regex}/ or title =~ /#{regex}/i }
+      $entryhash.select { |id,title| id =~ /#{regex}/i or title =~ /#{regex}/i }
     end
 
     def write_cachefile

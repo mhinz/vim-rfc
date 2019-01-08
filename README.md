@@ -25,26 +25,22 @@ Additionaly, nokogiri is used as XML parser:
 
 ## Usage
 
-List all documents from the database:
+List documents:
 
 ```
-:RFC
+:RFC [regexp]
 ```
 
-Use a query to search the database:
+Rebuild cache and list documents:
 
 ```
-:RFC <regexp>
-```
-
-Rebuild cache and query the database:
-
-```
-:RFC! <regexp>
+:RFC! [regexp]
 ```
 
 A new window with all matches will be shown. Use `<cr>` to open an entry or `q`
 to quit.
+
+Examples: `:RFC`, `:RFC 100`, `:RFC http/2`, `:RFC ipv4 addresses`.
 
 ## Configuration
 
