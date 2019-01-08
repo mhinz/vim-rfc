@@ -81,5 +81,5 @@ function! s:open_entry_by_cr()
 EOF
   setlocal filetype=rfc nomodified nomodifiable
   let cmd = bufexists(url) ? 'edit' : 'file'
-  execute cmd url
+  execute 'silent' cmd url
 endfunction
