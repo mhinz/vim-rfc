@@ -73,13 +73,17 @@ function! s:open_entry_by_cr()
   let [type, id] = matchlist(getline('.'), '^\v(...)0*(\d+)')[1:2]
   silent close
   let url = 'https://www.ietf.org/rfc/'.(type == 'RFC' ? 'rfc' : 'std/std').id.'.txt'
-  ruby << EOF
-  require 'open-uri'
-  body = URI.parse(VIM::eval('url')).read
-  VIM::command("enew | append #{body}")
-  VIM::command('0')
+  if bufloaded(url)
+    execute 'silent edit' url
+  else
+    ruby << EOF
+    require 'open-uri'
+    body = URI.parse(VIM::eval('url')).read
+    VIM::command("enew | append #{body}")
+    VIM::command('0')
 EOF
-  setlocal filetype=rfc nomodified nomodifiable
-  let cmd = bufloaded(url) ? 'edit' : 'file'
-  execute 'silent' cmd url
+    setlocal filetype=rfc nomodified nomodifiable
+    let cmd = bufloaded(url) ? 'edit' : 'file'
+    execute 'silent file' url
+  endif
 endfunction
