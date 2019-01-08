@@ -1,26 +1,21 @@
-*vim-rfc* is a plugin for easy querying of the RFC database and loading RFC/STD
-documents into a Vim buffer.
+**vim-rfc** allows querying the [RFC](https://en.wikipedia.org/wiki/Request_for_Comments) database and opening any RFC/STD document in
+Vim.
 
-(link:https://en.wikipedia.org/wiki/Request_for_Comments[What is a RFC?])
-
-image:https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif[vim-rfc in action!]
+![vim-rfc in action](https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif)
 
 - Includes a modified version of [vim-scripts/rfc-syntax](https://github.com/vim-scripts/rfc-syntax) for RFC syntax highlighting.
 
-== Installation
+## Installation
 
-If you don't have a plugin manager, I suggest having a look at
-link:https://github.com/junegunn/vim-plug.git[vim-plug]. Installation is a breeze afterwards:
+Use your favorite plugin manager.
 
-```vim
-call plug#begin('~/.vim/bundle')
-  Plug 'mhinz/vim-rfc'
-call plug#end()
-```
+Using [vim-plug](https://github.com/junegunn/vim-plug):
+
+    Plug 'mhinz/vim-rfc'
 
 Restart Vim and `:PlugInstall`, then have a look at the docs: `:h rfc`.
 
-== Dependencies
+## Dependencies
 
 This plugin requires Ruby support compiled into Vim: `:echo has('ruby')`
 
@@ -28,28 +23,32 @@ Additionaly, nokogiri is used as XML parser:
 
     $ gem install nokogiri
 
-== Usage
+## Usage
 
-..is really simple.
+Query the database:
 
-Query the database: `:RFC <regexp>`
+```
+:RFC <regexp>
+```
 
-Rebuild cache and query the database: `:RFC! <regexp>`
+Rebuild cache and query the database:
 
-A new window with all matches will be shown. Now you can simply use `<cr>` to
-open the entry.
+```
+:RFC! <regexp>
+```
 
-If you don't want to open anything, hit `q`.
+A new window with all matches will be shown. Use `<cr>` to open an entry or `q`
+to quit.
 
 TIP: Since regular expressions are used, `:RFC .*` will list all documents.
 Makes it easy to search.
 
-== Configuration
+## Configuration
 
 There are no options, but you can change the default colors used in the window
 opened by `:RFC`. See `:h rfc-colors`.
 
-== Internals
+## Internals
 
 If you use this plugin for the first time it downloads an index file from the
 internet. To parse that XML file a SAX parser, nokogiri, is used which is a
@@ -63,9 +62,10 @@ hash will be provided back to the Vim environment.
 
 At the end the index file will be removed, since it's not needed anymore.
 
-If you use the plugin for the second time, the cachefile will be used right
-away and downloading the 8 MiB index will be omitted.
+If you use the plugin for the second time, the cachefile will be used right away
+and downloading the 8 MiB index will be omitted.
 
-== License
+## Author and Feedback
 
-MIT license. Copyright (c) 2015 Marco Hinz.
+If you like my plugins, please star them on Github. It's a great way of getting
+feedback. Same goes for issues reports or feature requests.
