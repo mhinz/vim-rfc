@@ -71,6 +71,10 @@ function! s:rfcTag()
       echomsg 'The reference not found!'
       echohl None
     endtry
+  elseif syn == 'rfcRFC'
+    if search('\v%(RFC|STD) \d+', 'bc', line('.')) != 0
+      execute 'RFC' matchstr(getline('.')[col('.')-1:], '\v%(RFC|STD) \d+')
+    endif
   else
     echohl Error
     echomsg 'Cursor is not on Contents or References!'
