@@ -50,7 +50,7 @@ endfunction
 function! s:setup_window()
   silent $delete _
   silent file vim-rfc
-  setlocal nomodifiable nomodified
+  setlocal nomodifiable nomodified winfixheight
   setlocal buftype=nofile bufhidden=wipe nowrap
   if empty(&statusline)
     setlocal statusline=\ RFC/STD\ documents
