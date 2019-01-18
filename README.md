@@ -1,7 +1,7 @@
 **vim-rfc** allows querying the [RFC](https://en.wikipedia.org/wiki/Request_for_Comments) database and opening any RFC/STD document in
 Vim.
 
-![vim-rfc in action](https://github.com/mhinz/vim-rfc/raw/master/rfc-demo.gif)
+![vim-rfc in action](./demo.svg)
 
 - Includes a modified version of [vim-scripts/rfc-syntax](https://github.com/vim-scripts/rfc-syntax) for RFC syntax highlighting.
 
