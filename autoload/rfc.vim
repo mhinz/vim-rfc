@@ -78,7 +78,7 @@ function! s:open_entry_by_cr()
   else
     ruby << EOF
     require 'open-uri'
-    body = URI.parse(VIM::eval('url')).read
+    body = URI.parse(VIM::evaluate('url')).read
     VIM::command("enew | append #{body}")
     VIM::command('0')
 EOF
