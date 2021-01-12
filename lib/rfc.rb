@@ -69,7 +69,7 @@ module VimRFC
     end
 
     def write_indexfile
-      Net::HTTP.new('www.rfc-editor.org').start do |http|
+      Net::HTTP.start('www.rfc-editor.org', use_ssl: true) do |http|
         f = open($indexfile, 'w')
         begin
           http.request_get('/in-notes/rfc-index.xml') do |res|
