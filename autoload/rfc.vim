@@ -1,18 +1,11 @@
-let s:load_error = 0
-try
-  execute 'rubyfile' expand('<sfile>:p:h') . '/../lib/rfc.rb'
-catch /LoadError/
-  let s:load_error = 1
-endtry
+let s:has_python3 = 1
 
-function! rfc#query(rebuild_cache, query) abort
-  if !has('ruby')
-    echomsg 'vim-rfc: This plugin needs +Ruby support.'
-    return
-  endif
-
-  if s:load_error
-    echomsg 'vim-rfc: Please install the "nokogiri" gem and restart Vim.'
+function! rfc#query(create_cache_file, query) abort
+  if !s:has_python3 
+    echomsg 'vim-rfc: This plugin requires +python3 support for :python3 and py3eval().'
+    if has('nvim')
+      echomsg 'Run ":checkhealth provider" for further diagnosis.'
+    endif
     return
   endif
 
@@ -24,27 +17,22 @@ function! rfc#query(rebuild_cache, query) abort
     endif
   endif
 
-  ruby << EOF
-  matches = VimRFC::Handling.new(VIM::evaluate('a:rebuild_cache')).search(VIM::evaluate('a:query'))
+  if a:create_cache_file || !filereadable($HOME.'/.vim-rfc.txt')
+    echo 'Fetching RFC index... (takes a few seconds)' | redraw
+    if !py3eval('create_cache_file()')
+      return
+    endif
+    echo
+  endif
 
-  size = matches.length
-  if size == 0
-    VIM::command('redraw | echo "Nothing found."')
-  else
-    if size > 10
-      size = 10
-    end
-    VIM::command("#{size}new")
-    lnum = 0
-    cur = VIM::Buffer.current
-    Hash[matches.sort].each_pair do |tag,title|
-      cur.append(lnum, "#{tag}: #{title}")
-      lnum += 1
-    end
-    VIM::command('call <sid>setup_window()')
-    VIM::command('call feedkeys("\<cr>", "t")') if size == 1
-  end
-EOF
+  12new
+  silent read ~/.vim-rfc.txt
+  silent 1delete _
+  call s:setup_window()
+
+  if !empty(a:query)
+    call search(a:query)
+  endif
 endfunction
 
 function! s:setup_window()
@@ -62,12 +50,18 @@ function! s:setup_window()
   syntax region RFCType  start=/^/ end=/^.../ contained
   syntax match  RFCID    /\d\+/               contained
   syntax match  RFCDelim /:/                  contained
-  highlight link RFCTitle Title
+  highlight link RFCTitle Normal
   highlight link RFCType  Identifier
   highlight link RFCID    Number
   highlight link RFCDelim Delimiter
   0
 endfunction
+
+" Check only now for Python3 support, so that rfc#query() is guaranteed to exist.
+if !has('python3')
+  let s:has_python3 = 0
+  finish
+endif
 
 function! s:open_entry_by_cr()
   let [type, id] = matchlist(getline('.'), '^\v(...)0*(\d+)')[1:2]
@@ -76,14 +70,57 @@ function! s:open_entry_by_cr()
   if bufloaded(url)
     execute 'silent edit' url
   else
-    ruby << EOF
-    require 'open-uri'
-    body = URI.parse(VIM::evaluate('url')).read
-    VIM::command("enew | append #{body}")
-    VIM::command('0')
-EOF
+    echo 'Fetching RFC...' | redraw
+    if !py3eval('fetch_rfc("'.url.'")')
+      return
+    endif
+    echo
+    0
     setlocal filetype=rfc nomodified nomodifiable
-    let cmd = bufloaded(url) ? 'edit' : 'file'
     execute 'silent file' url
   endif
 endfunction
+
+python3 << EOF
+def fetch_rfc(url):
+  import urllib.request
+  try:
+    rfc = urllib.request.urlopen(url).read().decode('utf-8').splitlines()
+  except urllib.request.URLError as e:
+    print(f'{e}\nFetching RFC failed. Connected to the internet? Behind proxy?')
+    return False
+  vim.command('enew')
+  vim.current.buffer[:] = rfc
+  return True
+
+def create_cache_file():
+  import sys
+  import os
+  import urllib.request
+  import xml.etree.ElementTree as ET
+
+  try:
+    xml = urllib.request.urlopen('https://www.rfc-editor.org/in-notes/rfc-index.xml').read()
+  except urllib.error.URLError as e:
+    print(f'{e}\nFetching RFC index failed. Connected to the internet? Behind proxy?')
+    return False
+
+  root = ET.fromstring(xml)
+
+  # 3.8 introduced the any-ns syntax: '{*}tag',
+  # but let's go the old way for compatability.
+  ns = {'ns': 'http://www.rfc-editor.org/rfc-index'}
+
+  with open(os.path.expanduser('~/.vim-rfc.txt'), 'w') as f:
+    for entry in root.findall('ns:rfc-entry', ns):
+      id = entry.find('ns:doc-id', ns).text
+      title = entry.find('ns:title', ns).text
+      f.write(f"{id}: {title}\n")
+
+    for entry in root.findall('ns:std-entry', ns):
+      id = entry.find('ns:doc-id', ns).text
+      title = entry.find('ns:title', ns).text
+      f.write(f"{id}: {title}\n")
+
+  return True
+EOF
