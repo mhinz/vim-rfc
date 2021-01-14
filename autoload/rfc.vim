@@ -25,7 +25,7 @@ function! rfc#query(create_cache_file, query) abort
     echo
   endif
 
-  12new
+  belowright 12new
   silent read ~/.vim-rfc.txt
   silent 1delete _
   call s:setup_window()
@@ -40,6 +40,7 @@ function! s:setup_window()
   silent file vim-rfc
   setlocal nomodifiable nomodified winfixheight
   setlocal buftype=nofile bufhidden=wipe nowrap
+  setlocal nonumber norelativenumber foldcolumn=0 signcolumn=no
   if empty(&statusline)
     setlocal statusline=\ RFC/STD\ documents
   endif
