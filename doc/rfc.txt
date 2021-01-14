@@ -27,49 +27,37 @@
 CONTENTS                                                          *rfc-contents*
 
     INTRO ........................................|rfc-intro|
-    DEPENDENCIES .................................|rfc-dependencies|
     USAGE ........................................|rfc-usage|
     COLORS .......................................|rfc-colors|
-    INTERNALS ....................................|rfc-internals|
+    INTERNALS ....................................|rfc-implementation|
 
 ==============================================================================
 INTRO                                                                *rfc-intro*
 
-vim-rfc is a plugin to query the RFC database and loading RFC/STD documents
-into a Vim buffer.
+vim-rfc lists all existing RFCs and opens the selected one in a new buffer.
 
-It is mostly written in Ruby.
-
-==============================================================================
-DEPENDENCIES                                                  *rfc-dependencies*
-
-The used SAX parser is provided by the Ruby gem nokogiri.
->
-    gem install nokogiri
-<
-The performance reasons the parser is implemented in C and thus depends on
-libxml2-dev and libxslt-dev.
+Works in Vim and Nvim, but it requires python3 support: `:echo has('python3')`
 
 ==============================================================================
 USAGE                                                                *rfc-usage*
 
-..is really simple.
-
-Query the database:~
+List documents:
 >
-    :RFC <case-insensitive regexp>
+    :RFC <vim regexp>
 <
-Rebuild cache and query the database:~
+Rebuild cache and list documents:
 >
-    :RFC! <case-insensitive regexp>
+    :RFC! <vim regexp>
 <
-A new window with all found matches will be shown. Now you can simply use
-|<cr>| to open the entry.
+Use `<cr>` to open an entry or `q` to quit.
 
-If you don't want to open anything, hit 'q'.
+Examples: `:RFC`, `:RFC 100`, `:RFC http/2`, `:RFC ipv4 addresses`
 
-NOTE: Since regular expressions are used, ":RFC .*" will list all documents.
-Makes it easy to search.
+Within a RFC document, if you are on a line from the table of contents,
+`<c-]>`/`<cr>` will jump to the referenced section.
+
+On a string like `STD 10` or `RFC 1234` (which should also be highlighted), it
+opens the referenced document instead. Use `<c-o>` to jump back.
 
 ==============================================================================
 COLORS                                                              *rfc-colors*
@@ -83,7 +71,7 @@ Example: "RFC0123: Nice RFC, yo."
     RFCType   |  RFC           |  linked to Identifier
     RFCID     |  0123          |  linked to Number
     RFCDelim  |  :             |  linked to Delimiter
-    RFCTitle  |  Nice RFC, yo. |  linked to Title
+    RFCTitle  |  Nice RFC, yo. |  linked to Normal
 
 Example: (my terminal emulator supports 256 colors)
 >
@@ -93,22 +81,17 @@ Example: (my terminal emulator supports 256 colors)
     highlight RFCDelim ctermfg=240 ctermbg=NONE cterm=NONE
 <
 ==============================================================================
-INTERNALS                                                        *rfc-internals*
+IMPLEMENTATION                                              *rfc-implementation*
 
-If you use this plugin for the first time it downloads an index file from the
-internet. To parse that XML file a SAX parser, nokogiri, is used which is a
-event-driven XML parser written in C.
+This first time this plugin is used, it downloads an index file containing all
+existing RFC documents (~12M). That XML file is parsed and all RFC and STD
+entries get cached in `~/.vim-rfc.txt`.
 
-The parse tree is saved in a Ruby hash and written to a cachefile in YAML
-format. The file is located in ~/.vim-rfc.yml.
+The second time this plugin is used, the cachefile will be used right away and
+downloading the ~8 MiB index file will be omitted.
 
-If you issue a query, the cachefile will be used for the lookup. The resulting
-hash will be provided back to the Vim environment.
-
-At the end the index file will be removed, since it's not needed anymore.
-
-If you use the plugin for the second time, the cachefile will be used right
-away and downloading the 8 MiB index will be omitted.
+If you select an entry, it gets downloaded and immediately put into a new
+buffer. There is no temporary file used on the drive.
 
 ==============================================================================
 vim: tw=78
