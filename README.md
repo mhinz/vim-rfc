@@ -50,11 +50,10 @@ This first time this plugin is used, it downloads an index file containing all
 existing RFC documents (~12M). That XML file is parsed and all RFC and STD
 entries get cached in `~/.vim-rfc.txt`.
 
-The second time this plugin is used, the cachefile will be used right away and
-downloading the ~8 MiB index file will be omitted.
+The second time this plugin is used, the cachefile will be used right away.
 
 If you select an entry, it gets downloaded and immediately put into a new
-buffer. There is no temporary file used on the drive.
+buffer. There is no temporary file created on the drive.
 
 ## Author and Feedback
 
