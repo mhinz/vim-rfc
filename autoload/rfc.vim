@@ -1,5 +1,15 @@
 let s:has_python3 = 1
 
+let s:cache_dir = $HOME
+if !has('win32')
+  let s:cache_dir = has('nvim')
+        \ ? stdpath('cache')
+        \ : (exists('$XDG_CACHE_HOME') ? $XDG_CACHE_HOME : expand('~/.cache')) . '/vim'
+  if !isdirectory(s:cache_dir)
+    call mkdir(s:cache_dir, 'p', 0700)
+  endif
+endif
+
 function! rfc#query(create_cache_file, query) abort
   if !s:has_python3 
     echomsg 'vim-rfc: This plugin requires +python3 support for :python3 and py3eval().'
@@ -17,7 +27,7 @@ function! rfc#query(create_cache_file, query) abort
     endif
   endif
 
-  if a:create_cache_file || !filereadable($HOME.'/.vim-rfc.txt')
+  if a:create_cache_file || !filereadable(s:cache_dir.'/vim-rfc.txt')
     echo 'Fetching RFC index... (takes a few seconds)' | redraw
     if !py3eval('create_cache_file()')
       return
@@ -26,7 +36,7 @@ function! rfc#query(create_cache_file, query) abort
   endif
 
   belowright 12new
-  silent read ~/.vim-rfc.txt
+  silent execute 'read' fnameescape(s:cache_dir.'/vim-rfc.txt')
   silent 1delete _
   call s:setup_window()
 
@@ -106,13 +116,14 @@ def create_cache_file():
     print(f'{e}\nFetching RFC index failed. Connected to the internet? Behind proxy?')
     return False
 
+  cache_dir = vim.eval('s:cache_dir')
   root = ET.fromstring(xml)
 
   # 3.8 introduced the any-ns syntax: '{*}tag',
   # but let's go the old way for compatability.
   ns = {'ns': 'http://www.rfc-editor.org/rfc-index'}
 
-  with open(os.path.expanduser('~/.vim-rfc.txt'), 'w') as f:
+  with open(os.path.expanduser(cache_dir + '/vim-rfc.txt'), 'w') as f:
     for entry in root.findall('ns:rfc-entry', ns):
       id = entry.find('ns:doc-id', ns).text
       title = entry.find('ns:title', ns).text

@@ -46,14 +46,21 @@ opened by `:RFC`. See `:h rfc-colors`.
 
 ## Implementation
 
-This first time this plugin is used, it downloads an index file containing all
-existing RFC documents (~12M). That XML file is parsed and all RFC and STD
-entries get cached in `~/.vim-rfc.txt`.
+This first time this plugin is used, it takes a few seconds to download an index
+file containing all existing RFC documents (~12 MB). That XML file is parsed and
+all RFC and STD entries get stored in a cache file.
 
-The second time this plugin is used, the cachefile will be used right away.
+The second time this plugin is used, the cache file will be used right away.
 
 If you select an entry, it gets downloaded and immediately put into a new
-buffer. There is no temporary file created on the drive.
+buffer. There is no temporary file created on the disk.
+
+Default cache file locations:
+
+- `$XDG_CACHE_HOME/vim/vim-rfc.txt` for Vim
+- `$XDG_CACHE_HOME/nvim/vim-rfc.txt` for Nvim
+
+If `$XDG_CACHE_HOME` is not set, it defaults to `~/.cache`.
 
 ## Author and Feedback
 
