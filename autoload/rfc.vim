@@ -11,7 +11,7 @@ if !has('win32')
 endif
 
 function! rfc#query(create_cache_file, query) abort
-  if !s:has_python3 
+  if !s:has_python3
     echomsg 'vim-rfc: This plugin requires +python3 support for :python3 and py3eval().'
     if has('nvim')
       echomsg 'Run ":checkhealth provider" for further diagnosis.'
