@@ -11,7 +11,7 @@ if !has('win32')
 endif
 
 function! rfc#query(create_cache_file, query) abort
-  if !s:has_python3 
+  if !s:has_python3
     echomsg 'vim-rfc: This plugin requires +python3 support for :python3 and py3eval().'
     if has('nvim')
       echomsg 'Run ":checkhealth provider" for further diagnosis.'
@@ -93,10 +93,20 @@ function! s:open_entry_by_cr()
 endfunction
 
 python3 << EOF
+def _build_req(url):
+  from urllib.request import Request
+  return Request(
+    url,
+    data=None,
+    headers={
+      'User-Agent': 'Mozilla/5.0 (compatible; vim-rfc)',
+    }
+  )
+
 def fetch_rfc(url):
   import urllib.request
   try:
-    rfc = urllib.request.urlopen(url).read().decode('utf-8').splitlines()
+    rfc = urllib.request.urlopen(_build_req(url)).read().decode('utf-8').splitlines()
   except urllib.request.URLError as e:
     print(f'{e}\nFetching RFC failed. Connected to the internet? Behind proxy?')
     return False
@@ -111,7 +121,7 @@ def create_cache_file():
   import xml.etree.ElementTree as ET
 
   try:
-    xml = urllib.request.urlopen('https://www.rfc-editor.org/in-notes/rfc-index.xml').read()
+    xml = urllib.request.urlopen(_build_req('https://www.rfc-editor.org/rfc-index.xml')).read()
   except urllib.error.URLError as e:
     print(f'{e}\nFetching RFC index failed. Connected to the internet? Behind proxy?')
     return False
